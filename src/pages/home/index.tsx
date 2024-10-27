@@ -1,4 +1,5 @@
 import { Container } from './styled';
+import WapTree from '../../components/tree';
 import { Component } from 'react';
 import { FloatButton } from 'antd';
 import { DownloadOutlined } from '@ant-design/icons';
@@ -12,6 +13,7 @@ class Home extends Component {
     return (
       <>
         <Container>
+          <WapTree />
           <FloatButton type="primary" icon={<DownloadOutlined />} onClick={this.onDownload} />
         </Container>
       </>
