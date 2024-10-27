@@ -1,14 +1,17 @@
 import { Tree } from 'antd';
 import styled from 'styled-components';
-const { DirectoryTree } = Tree;
 
-export const WapDirectoryTree = styled(DirectoryTree)`
-  width: 90%;
-  height: 50%;
-  padding: 3rem;
-  box-shadow: rgba(0, 0, 0, 0.16) 20px 20px 30px;
+export const WapTreeContainer = styled.div`
+  background-color: white;
+  padding: 20px;
+  height: 100%;
+  border-radius: 25px;
 
   .ant-tree-treenode {
-   /* border-radius: 25px; */
+    padding: 7px 10px;
   }
+`;
+
+export const WapClassificationTree = styled(Tree.DirectoryTree)`
+  margin-top: 20px;
 `;
