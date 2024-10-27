@@ -1,9 +1,10 @@
+import { Component } from 'react';
+import Search from 'antd/es/input/Search'; 
+import { CarryOutOutlined } from '@ant-design/icons';
 import { GetProps, Tree, TreeDataNode } from 'antd';
 
-import { useState } from 'react';
+import { WapClassificationTree, WapTreeContainer } from './styled';
 
-import { WapDirectoryTree } from './styled';
-import { Component } from 'react';
 type DirectoryTreeProps = GetProps<typeof Tree.DirectoryTree>;
 
 class WapTree extends Component {
@@ -11,6 +12,7 @@ class WapTree extends Component {
     {
       key: '0',
       title: 'Animais',
+      icon: <CarryOutOutlined />,
       children: [
         { title: 'Mamíferos', key: '0-1', isLeaf: true },
         { title: 'Aves', key: '0-2', isLeaf: true },
@@ -26,16 +28,25 @@ class WapTree extends Component {
     console.log('Trigger Expand', keys, info);
   };
 
+  onChangeSearch(): void {
+    console.log('onChangeSearch');
+  }
+
   render() {
     return (
       <>
-        <WapDirectoryTree
-          multiple
-          defaultExpandAll
-          onSelect={this.onSelect}
-          onExpand={this.onExpand}
-          treeData={this.treeData}
-        />
+        <WapTreeContainer>
+          <Search placeholder="Search" onChange={this.onChangeSearch} />
+          <WapClassificationTree
+            multiple
+            showLine
+            defaultExpandAll
+            showIcon={false}
+            onSelect={this.onSelect}
+            onExpand={this.onExpand}
+            treeData={this.treeData}
+          />
+        </WapTreeContainer>
       </>
     );
   }
