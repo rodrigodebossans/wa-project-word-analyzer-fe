@@ -1,7 +1,6 @@
 import { ReactNode, SetStateAction, useState } from 'react';
 import { TreeDataNode, Dropdown, MenuProps, Modal, Form, Input } from 'antd';
 
-import Search from 'antd/es/input/Search';
 import { BasicDataNode } from 'antd/es/tree';
 
 import { WapClassificationTree, WapTreeContainer } from './styled';
@@ -45,12 +44,6 @@ const WapTree = () => {
     },
   ];
 
-  const onChangeSearch = (): void => {
-    console.log('onChangeSearch');
-  };
-
-  const onOpenDropdownChange = (open: boolean): void => (!open ? setSelectedNode(undefined) : undefined);
-
   const onRightClickTreeOption = (event: { node: SetStateAction<TreeDataNode | undefined> }): void => {
     setSelectedNode(event.node);
     isDropdownOpen(true);
@@ -58,12 +51,7 @@ const WapTree = () => {
 
   const titleCustomRender = (node: TreeDataNode) => {
     return (
-      <Dropdown
-        menu={{ items: dropdownOptions }}
-        trigger={['contextMenu']}
-        destroyPopupOnHide
-        onOpenChange={onOpenDropdownChange}
-      >
+      <Dropdown menu={{ items: dropdownOptions }} trigger={['contextMenu']} destroyPopupOnHide>
         <span>{node.title as string}</span>
       </Dropdown>
     );
@@ -115,7 +103,6 @@ const WapTree = () => {
   return (
     <>
       <WapTreeContainer>
-        <Search placeholder="Search" onChange={onChangeSearch} />
         <WapClassificationTree
           multiple
           showLine
