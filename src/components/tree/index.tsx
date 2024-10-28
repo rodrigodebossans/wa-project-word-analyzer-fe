@@ -1,9 +1,24 @@
 import { ReactNode, SetStateAction, useState } from 'react';
-import { TreeDataNode, Dropdown, MenuProps, Modal, Form, Input, Empty, Typography, Button, Flex } from 'antd';
+import {
+  TreeDataNode,
+  Dropdown,
+  MenuProps,
+  Modal,
+  Form,
+  Input,
+  Empty,
+  Typography,
+  Button,
+  Flex,
+  Tooltip,
+  FloatButton,
+} from 'antd';
 
 import { BasicDataNode } from 'antd/es/tree';
 
 import { WapClassificationTree, WapTreeContainer } from './styled';
+import { DownloadOutlined } from '@ant-design/icons';
+import TreeModel from 'tree-model';
 
 enum WapTreeOptionTypes {
   ADD = 'add',
@@ -19,6 +34,8 @@ interface WapTreeModalOptions {
 interface WapTreeWordFormValue {
   word: string;
 }
+
+type WapTreeNodeExportModel = TreeModel.Node<TreeDataNode>;
 
 const WapTree = () => {
   const [, isDropdownOpen] = useState(false);
@@ -73,7 +90,7 @@ const WapTree = () => {
   };
 
   const generateNodeKey = (node: TreeDataNode): string =>
-    node.children?.length ? `${node.key}-${node.children.length + 1}` : `${node.key}-0`;
+    node.children?.length ? `${node.key}-${node.children.length}` : `${node.key}-0`;
 
   const onSubmitForm = (value: WapTreeWordFormValue) => {
     if (selectedNode) {
@@ -100,6 +117,37 @@ const WapTree = () => {
       {dom}
     </Form>
   );
+
+  const downloadJsonFile = (filename: string, treeModel: WapTreeNodeExportModel): void => {
+    const emptyJson = JSON.stringify(treeModel.model);
+    const blob = new Blob([emptyJson], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const convertTreeDataToExportModel = (treeData: TreeDataNode[]): WapTreeNodeExportModel => {
+    const treeModel = new TreeModel();
+    const rootNode = treeModel.parse(treeData[0]);
+
+    const traverse = (node: TreeModel.Node<TreeDataNode>): WapTreeNodeExportModel => {
+      const { key: id, title: name, children } = node.model;
+
+      const newNode = treeModel.parse({ id, name });
+      if (children) children.forEach((child: TreeDataNode) => newNode.addChild(traverse(treeModel.parse(child))));
+
+      return newNode;
+    };
+
+    return traverse(rootNode);
+  };
+
+  const onDownload = (): void => {
+    downloadJsonFile('classification-tree.json', convertTreeDataToExportModel(treeData));
+  };
 
   return (
     <>
@@ -137,17 +185,25 @@ const WapTree = () => {
 
       <Modal
         destroyOnClose
+        focusTriggerAfterClose
         title={modalOptions?.title}
         open={modalOptions?.visible}
         modalRender={modalCustomRender}
         okButtonProps={{ htmlType: 'submit' }}
         okText="Save"
         onCancel={() => setModalOptions({ visible: false })}
+        zIndex={1201}
       >
         <Form.Item name="word" rules={wordFieldRules}>
-          <Input id="word" placeholder="Type the word" />
+          <Input autoFocus id="word" placeholder="Type the word" />
         </Form.Item>
       </Modal>
+
+      {treeData.length > 0 && (
+        <Tooltip title="Salvar" placement="leftTop" trigger="hover">
+          <FloatButton type="primary" icon={<DownloadOutlined />} onClick={onDownload} />
+        </Tooltip>
+      )}
     </>
   );
 };
