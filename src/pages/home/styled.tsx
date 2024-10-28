@@ -8,7 +8,7 @@ export const WaHomeContainer = styled(Layout)`
     height: 100%;
     padding: 20px;
 
-    p {
+    .slogan {
       text-align: center;
     }
 

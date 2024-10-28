@@ -1,5 +1,5 @@
 import { ReactNode, SetStateAction, useState } from 'react';
-import { TreeDataNode, Dropdown, MenuProps, Modal, Form, Input } from 'antd';
+import { TreeDataNode, Dropdown, MenuProps, Modal, Form, Input, Empty, Typography, Button, Flex } from 'antd';
 
 import { BasicDataNode } from 'antd/es/tree';
 
@@ -22,7 +22,7 @@ interface WapTreeWordFormValue {
 
 const WapTree = () => {
   const [, isDropdownOpen] = useState(false);
-  const [treeData, setTreeData] = useState<TreeDataNode[]>([{ key: '0', title: 'Classification Tree' }]);
+  const [treeData, setTreeData] = useState<TreeDataNode[]>([]);
   const [selectedNode, setSelectedNode] = useState<TreeDataNode>();
   const [modalOptions, setModalOptions] = useState<Partial<WapTreeModalOptions>>({ visible: false });
 
@@ -30,8 +30,6 @@ const WapTree = () => {
   const wordFieldRules = [{ required: true, message: 'Please input the nome of word!' }];
 
   const onAddWord = () => {
-    if (!selectedNode) return;
-
     isDropdownOpen(false);
     setModalOptions({ title: 'Add a new word', operationType: WapTreeOptionTypes.ADD, visible: true });
   };
@@ -78,10 +76,13 @@ const WapTree = () => {
     node.children?.length ? `${node.key}-${node.children.length + 1}` : `${node.key}-0`;
 
   const onSubmitForm = (value: WapTreeWordFormValue) => {
-    if (!selectedNode) throw new Error('Node not selected');
-
-    const newWordNode: TreeDataNode = { key: generateNodeKey(selectedNode), title: value.word, isLeaf: true };
-    setTreeData(addNodeToTree(treeData, selectedNode.key as string, newWordNode));
+    if (selectedNode) {
+      const newWordNode: TreeDataNode = { key: generateNodeKey(selectedNode), title: value.word, isLeaf: true };
+      setTreeData(addNodeToTree(treeData, selectedNode.key as string, newWordNode));
+    } else {
+      const newWordNode: TreeDataNode = { key: `0`, title: value.word, isLeaf: true };
+      setTreeData([newWordNode]);
+    }
 
     setModalOptions({ visible: false });
     setSelectedNode(undefined);
@@ -103,16 +104,35 @@ const WapTree = () => {
   return (
     <>
       <WapTreeContainer>
-        <WapClassificationTree
-          multiple
-          showLine
-          defaultExpandAll
-          showIcon={false}
-          treeData={treeData}
-          expandAction="doubleClick"
-          titleRender={titleCustomRender as ((node: BasicDataNode | TreeDataNode) => React.ReactNode) | undefined}
-          onRightClick={onRightClickTreeOption}
-        />
+        {treeData.length > 0 && (
+          <WapClassificationTree
+            multiple
+            showLine
+            defaultExpandAll
+            showIcon={false}
+            treeData={treeData}
+            expandAction="doubleClick"
+            titleRender={titleCustomRender as ((node: BasicDataNode | TreeDataNode) => React.ReactNode) | undefined}
+            onRightClick={onRightClickTreeOption}
+          />
+        )}
+
+        {treeData.length === 0 && (
+          <Flex align="center" justify="center" vertical>
+            <Empty
+              image="/tree/empty.svg"
+              description={
+                <Typography.Text>
+                  There are currently no words added. Click the button below to add your first word.
+                </Typography.Text>
+              }
+            >
+              <Button type="primary" onClick={onAddWord}>
+                Create Your First Word
+              </Button>
+            </Empty>
+          </Flex>
+        )}
       </WapTreeContainer>
 
       <Modal
