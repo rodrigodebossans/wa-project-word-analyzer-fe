@@ -38,10 +38,10 @@ interface WapTreeWordFormValue {
 type WapTreeNodeExportModel = TreeModel.Node<TreeDataNode>;
 
 const WapTree = () => {
-  const [, isDropdownOpen] = useState(false);
   const [treeData, setTreeData] = useState<TreeDataNode[]>([]);
   const [selectedNode, setSelectedNode] = useState<TreeDataNode>();
   const [modalOptions, setModalOptions] = useState<Partial<WapTreeModalOptions>>({ visible: false });
+  const [, isDropdownOpen] = useState(false);
 
   const [form] = Form.useForm();
   const wordFieldRules = [{ required: true, message: 'Please input the nome of word!' }];
@@ -110,7 +110,6 @@ const WapTree = () => {
       clearOnDestroy
       layout="vertical"
       form={form}
-      name="word-form"
       initialValues={{ modifier: 'public' }}
       onFinish={values => onSubmitForm(values)}
     >
@@ -151,7 +150,7 @@ const WapTree = () => {
 
   return (
     <>
-      <WapTreeContainer>
+      <WapTreeContainer data-testid="wap-tree">
         {treeData.length > 0 && (
           <WapClassificationTree
             multiple
@@ -168,7 +167,7 @@ const WapTree = () => {
         {treeData.length === 0 && (
           <Flex align="center" justify="center" vertical>
             <Empty
-              image="/tree/empty.svg"
+              image="tree/empty.svg"
               description={
                 <Typography.Text>
                   There are currently no words added. Click the button below to add your first word.
@@ -200,8 +199,8 @@ const WapTree = () => {
       </Modal>
 
       {treeData.length > 0 && (
-        <Tooltip title="Salvar" placement="leftTop" trigger="hover">
-          <FloatButton type="primary" icon={<DownloadOutlined />} onClick={onDownload} />
+        <Tooltip title="Download Classification Tree" placement="leftTop" trigger="hover">
+          <FloatButton data-testid="download-button" type="primary" icon={<DownloadOutlined />} onClick={onDownload} />
         </Tooltip>
       )}
     </>

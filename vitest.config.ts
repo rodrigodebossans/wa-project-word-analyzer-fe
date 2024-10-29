@@ -14,6 +14,7 @@ export default mergeConfig(
           fallbackCJS: true,
         },
       },
+      setupFiles: ['./vite.setup.ts'],
     },
   }),
 );

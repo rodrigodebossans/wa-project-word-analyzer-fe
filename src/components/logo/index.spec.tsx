@@ -4,14 +4,14 @@ import { render, screen } from '@testing-library/react';
 
 import Logo from '.';
 
-describe('Logo', () => {
+describe('Logo Component', () => {
   it('should render the component correctly', () => {
     render(<Logo />);
 
-    const element = screen.getByAltText('Logo Wa Project');
+    const logoElement = screen.getByAltText('Logo Wa Project');
 
-    expect(element).toBeInTheDocument();
-    expect(element).toHaveAttribute('src', 'logo.svg');
-    expect(element).toHaveAttribute('alt', 'Logo Wa Project');
+    expect(logoElement).toBeInTheDocument();
+    expect(logoElement).toHaveAttribute('src', 'logo.svg');
+    expect(logoElement).toHaveAttribute('alt', 'Logo Wa Project');
   });
 });
