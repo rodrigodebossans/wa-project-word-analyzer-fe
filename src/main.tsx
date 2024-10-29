@@ -1,7 +1,7 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { ConfigProvider } from 'antd';
-import { themeConfig } from './config/theme.ts';
+import { themeConfig } from './config/index.ts';
 import { RouterProvider } from 'react-router-dom';
 import { routers } from './routes/index.tsx';
 import { StyleSheetManager } from 'styled-components';
