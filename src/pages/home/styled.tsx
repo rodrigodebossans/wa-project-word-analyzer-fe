@@ -22,4 +22,8 @@ export const WaHomeContainer = styled(Layout)`
     bottom: 2rem;
     right: 2rem;
   }
+
+  .ant-splitter-panel:nth-child(3) {
+    padding: 20px;
+  }
 `;

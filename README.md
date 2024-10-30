@@ -1,50 +1,84 @@
-# React + TypeScript + Vite
+# Word Analyzer - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Esta é uma aplicação que permite construir e visualizar árvores de classificação de palavras de forma simplificada, permitindo salvar um arquivo JSON contendo uma hierarquia no formato correto para o processamento.
 
-Currently, two official plugins are available:
+Este repositório contém a interface web construída com **[Vite](https://vitejs.dev/)** e **[React](https://react.dev/)**. O design da interface é baseado no **[Ant Design](https://ant.design/)**, e os testes foram implementados com a **[Testing Library](https://testing-library.com/)**.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Índice
+- [Uso](#uso)
+- [Instalação](#instalação)
+- [Estrutura do Projeto](#estrutura-do-projeto)
+- [Testes](#testes)
 
-## Expanding the ESLint configuration
+## Uso
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### Funcionalidades principais:
+- **Visualização**: A árvore hierárquica é exibida de forma visual, permitindo uma navegação clara pelos níveis.
+- **Adicionar Níveis**: A interface suporta a criação de níveis e subníveis de palavras de forma intuitiva.
+- **Salvar Hierarquia**: O botão de salvar gera um arquivo JSON da estrutura criada e permite seu download.
 
-- Configure the top-level `parserOptions` property like this:
+### Funcionalidades adicionais
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+- **Estado vazio para a àrvore**: Exibe um estado vazio quando a árvore hierárquica não possui nenhuma palavra cadastrada.
+
+### Interface
+
+<p align="center">
+    <img src="docs/images/preview-with-empty-state.png" width="49%" />
+    <img src="docs/images/preview-with-tree.png" width="49%" />
+</p>
+
+A interface foi construída com **Ant Design**, proporcionando uma experiência de usuário fluida e moderna. Cada parte da hierarquia é exibida em componentes de fácil interação.
+
+## Instalação
+
+### Pré-requisitos:
+- Node.js (v16+)
+- npm ou yarn
+
+### Passos:
+
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/rodrigodebossans/wa-project-word-analyzer-fe.git
+   cd wa-project-word-analyzer-fe
+   ```
+
+2. Instale as dependências:
+   ```bash
+   npm install
+   # ou
+   yarn install
+   ```
+
+3. Inicie o servidor de desenvolvimento:
+   ```bash
+   npm run start:dev
+   # ou
+   yarn start:dev
+   ```
+
+## Estrutura do projeto
+
+A organização do projeto é simples e modular, facilitando a manutenção e a adição de novas funcionalidades.
+
+```plaintext
+src
+├── components  # Componentes principais da aplicação
+├── config      # Configurações da aplicação
+├── global      # Estilos globais da aplicação
+├── pages       # Páginas principais da aplicação
+├── routes      # Rotas da aplicação
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## Testes
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+Os testes unitários foram implementados utilizando a **React Testing Library** para garantir a funcionalidade correta da interface.
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+### Rodando os testes:
+
+```bash
+npm run test
+# ou
+yarn test
 ```
